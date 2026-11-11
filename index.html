@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>McWaSa Updates | Kenyan gospel news, events and gigs</title>
+<meta name="description" content="Kenyan gospel news, plus events and gigs near you and coming soon.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='black'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%2339FF14' font-family='Impact,sans-serif'>M</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#000;--panel:#121212;--line:#2a2a2a;--text:#f4f4ef;--mute:#9a9a92;--green:#39FF14;--yellow:#FFE600;
+--display:'Anton',Impact,'Arial Narrow Bold',sans-serif;--body:'Work Sans',system-ui,Arial,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:70px}
+body{background:var(--ink);color:var(--text);font-family:var(--body);line-height:1.55;padding-bottom:env(safe-area-inset-bottom)}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:var(--ink);border-bottom:2px solid var(--green);padding-top:env(safe-area-inset-top)}
+.bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 0}
+.logo{font-family:var(--display);font-size:1.7rem;line-height:1;text-decoration:none;letter-spacing:.5px}
+.logo b{color:var(--green);font-weight:400}.logo i{color:var(--yellow);font-style:normal}
+nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav a{text-decoration:none;padding:7px 13px;border-radius:99px;font-weight:700;font-size:.92rem;border:2px solid transparent}
+nav a:hover{border-color:var(--line)}
+nav a[aria-current=page]{background:var(--green);color:#000}
+
+/* hero */
+.hero{padding:44px 0 26px;display:grid;gap:22px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(3rem,10vw,7rem);line-height:.92;text-transform:uppercase}
+.hero h1 span{display:block}
+.hero h1 .g{color:var(--green)}.hero h1 .y{color:var(--yellow)}
+.hero p{max-width:52ch;color:var(--mute);font-size:1.08rem}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:2px solid var(--green);background:var(--green);color:#000;font-weight:700;padding:10px 20px;border-radius:99px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.alt{background:transparent;color:var(--green)}
+.btn.y{background:var(--yellow);border-color:var(--yellow)}
+.btn.sm{padding:6px 14px;font-size:.88rem}
+.btn:hover{filter:brightness(1.1)}
+
+/* sections */
+section.view{display:none;padding:18px 0 60px}
+section.view.on{display:block}
+h2{font-family:var(--display);font-weight:400;font-size:2.1rem;text-transform:uppercase;margin:26px 0 6px}
+h2 em{font-style:normal;color:var(--green)}
+.sub{color:var(--mute);margin-bottom:14px}
+
+/* toolbar */
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:end;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0 20px}
+.tools label{display:grid;gap:3px;font-size:.82rem;color:var(--mute)}
+select,input,textarea{background:#000;border:2px solid var(--line);border-radius:10px;padding:8px 10px;min-width:140px}
+select:focus,input:focus,textarea:focus{border-color:var(--green);outline:none}
+textarea{width:100%;resize:vertical}
+.msg{color:var(--yellow);font-size:.9rem;min-height:1.3em}
+
+/* feed */
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.news{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--green);border-radius:6px 14px 14px 6px;padding:16px}
+.news.y{border-left-color:var(--yellow)}
+.news h3{font-size:1.15rem;line-height:1.3;margin:6px 0}
+.news p{color:#d0d0c8;font-size:.95rem}
+.meta{font-size:.82rem;color:var(--mute)}
+.tag{display:inline-block;font-size:.76rem;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--green);color:#000}
+.tag.y{background:var(--yellow)}
+
+/* events */
+.list{display:grid;gap:12px}
+.ev{display:grid;grid-template-columns:84px 1fr auto;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.date{background:var(--yellow);color:#000;text-align:center;border-radius:10px;padding:8px 4px;font-family:var(--display);line-height:1}
+.date.gig{background:var(--green)}
+.date big{display:block;font-size:2rem}
+.date small{font-family:var(--body);font-weight:700;font-size:.72rem}
+.ev h3{font-size:1.1rem;line-height:1.25}
+.dist{font-weight:700;color:var(--green);text-align:right;white-space:nowrap}
+.dist small{display:block;color:var(--mute);font-weight:400}
+.empty{border:2px dashed var(--line);border-radius:14px;padding:26px;text-align:center;color:var(--mute)}
+@media(max-width:560px){.ev{grid-template-columns:70px 1fr}.dist{grid-column:2;text-align:left}}
+
+/* poster: the one memorable element */
+.posters{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.poster{aspect-ratio:4/5;border-radius:6px;padding:22px;display:flex;flex-direction:column;position:relative;overflow:hidden;box-shadow:8px 8px 0 var(--shadow,#1d1d1d);cursor:pointer;transition:transform .15s}
+.poster:hover{transform:translate(-3px,-3px)}
+.poster .kick{font-weight:700;font-size:.95rem;display:inline-block;padding:3px 12px;border-radius:99px;align-self:flex-start;background:var(--k-bg);color:var(--k-fg)}
+.poster h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(2rem,6vw,2.9rem);line-height:.98;margin:16px 0 14px}
+.poster ul{list-style:none;padding:0;display:grid;gap:7px;font-weight:500;font-size:.98rem}
+.poster li{padding-left:22px;position:relative}
+.poster li::before{content:"";position:absolute;left:0;top:.5em;width:11px;height:11px;border-radius:50%;background:var(--dot)}
+.poster footer{margin-top:auto;display:flex;justify-content:space-between;align-items:end;gap:8px;font-size:.85rem;font-weight:700;border:0;position:static;padding:0}
+.poster .mark{font-family:var(--display);font-size:1.15rem;font-weight:400}
+.t-green{background:var(--green);color:#000;--k-bg:#000;--k-fg:var(--green);--dot:#000;--shadow:#0d5200}
+.t-yellow{background:var(--yellow);color:#000;--k-bg:#000;--k-fg:var(--yellow);--dot:#000;--shadow:#6b6000}
+.t-black{background:#000;color:var(--text);border:3px solid var(--green);--k-bg:var(--green);--k-fg:#000;--dot:var(--yellow);--shadow:#0d5200}
+.t-black h3{color:var(--yellow)}
+.posterview{max-width:420px}
+
+/* modal */
+dialog{margin:auto;border:0;background:transparent;max-width:min(440px,94vw);padding:0;overflow:visible}
+dialog::backdrop{background:rgba(0,0,0,.85)}
+dialog .poster{cursor:default;aspect-ratio:auto;min-height:520px}
+dialog .poster:hover{transform:none}
+.close{position:absolute;top:-14px;right:-8px;z-index:3;background:#fff;color:#000;border:0;width:36px;height:36px;border-radius:50%;font-weight:700;cursor:pointer}
+
+/* writer studio */
+.studio{display:grid;gap:26px;grid-template-columns:1fr 1fr;align-items:start}
+@media(max-width:820px){.studio{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px}
+.card label{display:grid;gap:4px;font-size:.88rem;color:var(--mute)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.swatches{display:flex;gap:8px}
+.swatches label{display:flex;align-items:center;gap:6px;color:var(--text);cursor:pointer}
+.swatches input{min-width:0;accent-color:var(--green)}
+footer.site{border-top:2px solid var(--yellow);padding:26px 0 40px;color:var(--mute);font-size:.9rem;margin-top:30px}
+footer.site b{color:var(--green)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#home" aria-label="McWaSa Updates home"><b>McWaSa</b> <i>Updates</i></a>
+    <nav aria-label="Main">
+      <a href="#home">Feed</a>
+      <a href="#events">Gigs near me</a>
+      <a href="#blog">Posters</a>
+      <a href="#studio">Writers</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- FEED -->
+<section class="view" id="home">
+  <div class="hero">
+    <h1><span class="g">Gospel</span><span>moves</span><span class="y">Kenya.</span></h1>
+    <p>News from the gospel scene, plus the events and gigs happening near you and coming up soon.</p>
+    <div class="cta"><a class="btn" href="#events">Find gigs near me</a><a class="btn alt" href="#blog">Read the posters</a></div>
+  </div>
+  <h2>Latest <em>news</em></h2>
+  <p class="sub">Fresh from our writers.</p>
+  <div class="grid" id="newsGrid"></div>
+  <h2>Coming <em>soon</em></h2>
+  <div class="list" id="soonList"></div>
+</section>
+
+<!-- EVENTS -->
+<section class="view" id="events">
+  <h2>Gigs and events <em>near you</em></h2>
+  <p class="sub">Share your location to see distance, or pick your town.</p>
+  <div class="tools">
+    <button class="btn y sm" id="locBtn" type="button">Use my location</button>
+    <label>Town
+      <select id="townSel"></select>
+    </label>
+    <label>Type
+      <select id="typeSel"><option value="">Gigs and events</option><option>Gig</option><option>Event</option></select>
+    </label>
+    <label>When
+      <select id="whenSel"><option value="7">Next 7 days</option><option value="30" selected>Next 30 days</option><option value="365">Anytime</option></select>
+    </label>
+    <label>Sort by
+      <select id="sortSel"><option value="date">Soonest</option><option value="dist">Nearest</option></select>
+    </label>
+  </div>
+  <p class="msg" id="locMsg" role="status"></p>
+  <div class="list" id="evList"></div>
+</section>
+
+<!-- POSTERS -->
+<section class="view" id="blog">
+  <h2>Poster <em>posts</em></h2>
+  <p class="sub">Every story uses the same poster layout, so the whole feed looks like one. Tap a poster to open it.</p>
+  <div class="posters" id="posterGrid"></div>
+</section>
+
+<!-- WRITERS -->
+<section class="view" id="studio">
+  <h2>Writers' <em>studio</em></h2>
+  <p class="sub">Only assigned writers can publish. Sign in with the email and password your editor gave you.</p>
+
+  <div class="card" id="loginCard" style="max-width:420px">
+    <label>Email<input id="wName" type="email" autocomplete="username"></label>
+    <label>Password<input id="wPass" type="password" autocomplete="current-password"></label>
+    <button class="btn" id="loginBtn" type="button">Sign in</button>
+    <p class="msg" id="loginMsg" role="status"></p>
+  </div>
+
+  <div id="studioBody" hidden>
+    <p class="sub">Signed in as <b id="who"></b> <button class="btn alt sm" id="logoutBtn" type="button">Sign out</button></p>
+    <div class="studio">
+      <form class="card" id="postForm">
+        <h3>New poster post</h3>
+        <label>Headline (keep it short)<input id="pHead" maxlength="60" required></label>
+        <div class="row">
+          <label>Tag<select id="pKick"><option>News</option><option>Interview</option><option>New release</option><option>Event recap</option><option>Spotlight</option></select></label>
+          <label>Poster colour
+            <span class="swatches">
+              <label><input type="radio" name="theme" value="t-green" checked>Green</label>
+              <label><input type="radio" name="theme" value="t-yellow">Yellow</label>
+              <label><input type="radio" name="theme" value="t-black">Black</label>
+            </span>
+          </label>
+        </div>
+        <label>Key point 1<input id="pB1" maxlength="80" required></label>
+        <label>Key point 2<input id="pB2" maxlength="80"></label>
+        <label>Key point 3<input id="pB3" maxlength="80"></label>
+        <label>Full story (shown when the poster is opened)<textarea id="pBody" rows="5"></textarea></label>
+        <button class="btn" type="submit">Publish post</button>
+        <p class="msg" id="postMsg" role="status"></p>
+      </form>
+      <div>
+        <h3 style="margin-bottom:10px">Live preview</h3>
+        <div id="preview" class="posterview"></div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:40px">Add a gig or <em>event</em></h2>
+    <form class="card" id="evForm" style="max-width:640px">
+      <div class="row">
+        <label>Title<input id="eTitle" required></label>
+        <label>Type<select id="eType"><option>Gig</option><option>Event</option></select></label>
+      </div>
+      <div class="row">
+        <label>Artist or host<input id="eArtist"></label>
+        <label>Venue<input id="eVenue" required></label>
+      </div>
+      <div class="row">
+        <label>Town<select id="eTown"></select></label>
+        <label>Date<input id="eDate" type="date" required></label>
+      </div>
+      <div class="row">
+        <label>Time<input id="eTime" type="time" value="15:00"></label>
+        <label>Entry<input id="ePrice" placeholder="Free or KES 500"></label>
+      </div>
+      <button class="btn y" type="submit">Add to listings</button>
+      <p class="msg" id="evMsg" role="status"></p>
+    </form>
+
+    <h2 style="margin-top:40px">Backup</h2>
+    <p class="sub">Posts are saved in this browser. Export them to keep a copy.</p>
+    <div class="cta"><button class="btn alt sm" id="exportBtn" type="button">Export JSON</button></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site"><div class="wrap"><b>McWaSa Updates</b> &mdash; Kenyan gospel news, gigs and events. Send tips to your assigned editor.</div></footer>
+
+<dialog id="dlg"><button class="close" id="dlgClose" aria-label="Close">&times;</button><div id="dlgBody"></div></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ============ CONFIG: edit these ============ */
+// 1. Paste your Supabase project values (Project Settings > API). The anon key is safe to be public.
+//    Leave both empty to run in local demo mode (nothing is shared).
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";
+// Used only in local demo mode:
+const DEMO_WRITERS = { "Mercy": "mcwasa-1", "Wanjiku": "mcwasa-2", "Samuel": "mcwasa-3" };
+
+const TOWNS = {
+  "Nairobi":[-1.2921,36.8219], "Mombasa":[-4.0435,39.6682], "Kisumu":[-0.0917,34.7680],
+  "Nakuru":[-0.3031,36.0800], "Eldoret":[0.5143,35.2698], "Thika":[-1.0332,37.0693],
+  "Nyeri":[-0.4201,36.9476], "Machakos":[-1.5177,37.2634], "Kisii":[-0.6817,34.7667], "Meru":[0.0480,37.6559]
+};
+/* ============================================ */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const iso = n => { const d = new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
+const store = {
+  get(k, f){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : f; }catch(e){ return f; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+/* ---- sample data (replaced as writers add their own) ---- */
+const SEED_POSTS = [
+  {id:"s1",head:"Worship night sells out in Nairobi",kick:"News",theme:"t-green",pts:["Over 3,000 attended","Three choirs shared the stage","Next edition announced"],body:"Replace this sample story with your own. Writers can publish from the Writers tab.",author:"Mercy",date:iso(-1)},
+  {id:"s2",head:"Rising voices of Mombasa gospel",kick:"Spotlight",theme:"t-yellow",pts:["Coast artists mixing Swahili praise","New EP drops this month","Church tours planned"],body:"Sample story. Add your own interviews and recaps.",author:"Samuel",date:iso(-3)},
+  {id:"s3",head:"Choir battle comes to Kisumu",kick:"Event recap",theme:"t-black",pts:["12 choirs, one trophy","Free entry for under 18s","Live stream for those far away"],body:"Sample story. Edit or delete after publishing your first post.",author:"Wanjiku",date:iso(-6)}
+];
+const SEED_EVENTS = [
+  {id:"e1",title:"Praise Fest Live",type:"Gig",artist:"Various artists",venue:"Uhuru Gardens",town:"Nairobi",date:iso(2),time:"14:00",price:"KES 500"},
+  {id:"e2",title:"Coast Worship Night",type:"Event",artist:"Coast praise team",venue:"Pwani Church Hall",town:"Mombasa",date:iso(5),time:"18:00",price:"Free"},
+  {id:"e3",title:"Lakeside Gospel Concert",type:"Gig",artist:"Kisumu choirs",venue:"Jomo Kenyatta Grounds",town:"Kisumu",date:iso(9),time:"15:00",price:"KES 300"},
+  {id:"e4",title:"Youth Revival Conference",type:"Event",artist:"Guest speakers",venue:"Nakuru Showground",town:"Nakuru",date:iso(14),time:"09:00",price:"Free"},
+  {id:"e5",title:"Sunday Worship Sessions",type:"Gig",artist:"Local worship leaders",venue:"Eldoret Sports Club",town:"Eldoret",date:iso(3),time:"16:00",price:"KES 200"},
+  {id:"e6",title:"Thika Praise Breakthrough",type:"Gig",artist:"Thika choirs",venue:"Thika Stadium",town:"Thika",date:iso(20),time:"13:00",price:"Free"}
+];
+
+const LIVE = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase);
+const sb = LIVE ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let posts = LIVE ? [] : SEED_POSTS, events = LIVE ? [] : SEED_EVENTS, me = null;
+const rowToPost = r => ({id:r.id, head:r.head, kick:r.kick, theme:r.theme, pts:r.pts||[], body:r.body||"", author:r.author, date:(r.created_at||"").slice(0,10)});
+async function loadData(){
+  if(!LIVE){ posts = store.get("mcwasa_posts",null)||SEED_POSTS; events = store.get("mcwasa_events",null)||SEED_EVENTS; renderAll(); return; }
+  const [p,e] = await Promise.all([
+    sb.from("posts").select("*").order("created_at",{ascending:false}),
+    sb.from("events").select("*").gte("date", iso(0)).order("date")]);
+  if(!p.error) posts = p.data.map(rowToPost);
+  if(!e.error) events = e.data;
+  renderAll();
+}
+async function loadMe(){
+  if(!LIVE){ me = store.get("mcwasa_user",null); return; }
+  const {data:{session}} = await sb.auth.getSession();
+  if(!session){ me=null; return; }
+  const {data} = await sb.from("writers").select("name").eq("user_id",session.user.id).maybeSingle();
+  me = data ? data.name : null;
+  if(!data) await sb.auth.signOut();
+}
+let pos = null; // {lat,lng} from the browser or selected town
+
+/* ---- helpers ---- */
+const km = (a,b,c,d) => { const r=x=>x*Math.PI/180, R=6371;
+  const h = Math.sin(r(c-a)/2)**2 + Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h)); };
+const dayDiff = d => Math.round((new Date(d+"T00:00:00") - new Date(iso(0)+"T00:00:00"))/864e5);
+const mon = d => new Date(d+"T00:00:00").toLocaleDateString("en-KE",{month:"short"});
+const dnum = d => new Date(d+"T00:00:00").getDate();
+const when = d => { const n = dayDiff(d); return n===0?"Today":n===1?"Tomorrow":n<0?"Past":`In ${n} days`; };
+
+function posterHTML(p, full){
+  return `<article class="poster ${esc(p.theme)}" ${full?"":`data-open="${esc(p.id)}" tabindex="0" role="button" aria-label="Open ${esc(p.head)}"`}>
+    <span class="kick">${esc(p.kick)}</span>
+    <h3>${esc(p.head)}</h3>
+    <ul>${p.pts.filter(Boolean).map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
+    <footer><span>By ${esc(p.author)}<br>${esc(p.date)}</span><span class="mark">McWaSa Updates</span></footer>
+  </article>`;
+}
+
+/* ---- renderers ---- */
+function renderNews(){
+  $("#newsGrid").innerHTML = posts.slice(0,6).map((p,i)=>`
+    <article class="news ${i%2?'y':''}">
+      <span class="tag ${i%2?'y':''}">${esc(p.kick)}</span>
+      <h3>${esc(p.head)}</h3>
+      <p>${esc(p.pts.filter(Boolean).join(". "))}.</p>
+      <p class="meta">By ${esc(p.author)} &bull; ${esc(p.date)}</p>
+      <p style="margin-top:8px"><button class="btn alt sm" data-open="${esc(p.id)}" type="button">Read poster</button></p>
+    </article>`).join("") || `<div class="empty">No news yet. Writers can publish from the Writers tab.</div>`;
+}
+function renderPosters(){
+  $("#posterGrid").innerHTML = posts.map(p=>posterHTML(p)).join("") || `<div class="empty">No posters yet.</div>`;
+}
+function evCard(e){
+  const t = TOWNS[e.town]; const d = pos && t ? Math.round(km(pos.lat,pos.lng,t[0],t[1])) : null;
+  return `<article class="ev">
+    <div class="date ${e.type==='Gig'?'gig':''}"><big>${dnum(e.date)}</big><small>${mon(e.date)}</small></div>
+    <div>
+      <span class="tag ${e.type==='Gig'?'':'y'}">${esc(e.type)}</span>
+      <h3>${esc(e.title)}</h3>
+      <p class="meta">${esc(e.artist||"")}${e.artist?" &bull; ":""}${esc(e.venue)}, ${esc(e.town)} &bull; ${esc(e.time||"")} &bull; ${esc(e.price||"")}</p>
+    </div>
+    <div class="dist">${d!==null?d+" km":""}<small>${when(e.date)}</small></div>
+  </article>`;
+}
+function renderEvents(){
+  const type=$("#typeSel").value, span=+$("#whenSel").value, sort=$("#sortSel").value;
+  let list = events.filter(e=>{ const n=dayDiff(e.date); return n>=0 && n<=span && (!type||e.type===type); });
+  list.sort((a,b)=> sort==="dist" && pos ? dist(a)-dist(b) : a.date.localeCompare(b.date));
+  $("#evList").innerHTML = list.map(evCard).join("") ||
+    `<div class="empty">Nothing in this window. Try "Anytime" or a different type.</div>`;
+}
+const dist = e => { const t=TOWNS[e.town]; return t&&pos ? km(pos.lat,pos.lng,t[0],t[1]) : 1e9; };
+function renderSoon(){
+  const l = events.filter(e=>{const n=dayDiff(e.date);return n>=0&&n<=14}).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4);
+  $("#soonList").innerHTML = l.map(evCard).join("") || `<div class="empty">No events in the next 2 weeks.</div>`;
+}
+const renderAll = () => { renderNews(); renderPosters(); renderEvents(); renderSoon(); };
+
+/* ---- location ---- */
+function setTownOptions(sel, withAny){
+  sel.innerHTML = (withAny?`<option value="">Pick a town</option>`:"") + Object.keys(TOWNS).map(t=>`<option>${t}</option>`).join("");
+}
+setTownOptions($("#townSel"), true); setTownOptions($("#eTown"), false);
+$("#townSel").onchange = e => { const t=TOWNS[e.target.value]; if(t){ pos={lat:t[0],lng:t[1]}; $("#locMsg").textContent=`Showing distances from ${e.target.value}.`; $("#sortSel").value="dist"; } renderEvents(); };
+$("#locBtn").onclick = () => {
+  if(!navigator.geolocation){ $("#locMsg").textContent="Your browser can't share location. Pick your town instead."; return; }
+  $("#locMsg").textContent="Finding you...";
+  navigator.geolocation.getCurrentPosition(g=>{
+    pos={lat:g.coords.latitude,lng:g.coords.longitude};
+    $("#locMsg").textContent="Location found. Sorted by nearest."; $("#sortSel").value="dist"; renderEvents();
+  }, ()=>{ $("#locMsg").textContent="Location was blocked. Pick your town instead."; }, {timeout:10000});
+};
+["typeSel","whenSel","sortSel"].forEach(id=>$("#"+id).onchange=renderEvents);
+
+/* ---- poster dialog ---- */
+const dlg = $("#dlg");
+function openPost(id){
+  const p = posts.find(x=>x.id===id); if(!p) return;
+  $("#dlgBody").innerHTML = posterHTML(p,true) + (p.body?`<div class="card" style="margin-top:12px"><p>${esc(p.body).replace(/\n/g,"<br>")}</p></div>`:"");
+  dlg.showModal();
+}
+document.addEventListener("click", e=>{ const o=e.target.closest("[data-open]"); if(o) openPost(o.dataset.open); });
+document.addEventListener("keydown", e=>{ if(e.key==="Enter"){ const o=e.target.closest?.("[data-open]"); if(o) openPost(o.dataset.open); }});
+$("#dlgClose").onclick = () => dlg.close();
+dlg.addEventListener("click", e=>{ if(e.target===dlg) dlg.close(); });
+
+/* ---- writers studio ---- */
+function showStudio(){
+  $("#loginCard").hidden = !!me; $("#studioBody").hidden = !me;
+  if(me){ $("#who").textContent = me; updatePreview(); }
+}
+$("#loginBtn").onclick = async () => {
+  const n=$("#wName").value.trim(), p=$("#wPass").value, m=$("#loginMsg");
+  if(!LIVE){
+    const key = Object.keys(DEMO_WRITERS).find(k=>k.toLowerCase()===n.toLowerCase());
+    if(key && DEMO_WRITERS[key]===p){ me=key; store.set("mcwasa_user",me); m.textContent=""; $("#wPass").value=""; showStudio(); }
+    else m.textContent="Demo mode: use a name and passcode from DEMO_WRITERS.";
+    return;
+  }
+  m.textContent="Signing in...";
+  const {error} = await sb.auth.signInWithPassword({email:n,password:p});
+  if(error){ m.textContent="Email or password is wrong. Check with your editor."; return; }
+  await loadMe();
+  if(!me){ m.textContent="This account is not set up as a writer. Ask your editor."; return; }
+  m.textContent=""; $("#wPass").value=""; showStudio();
+};
+$("#logoutBtn").onclick = async () => { if(LIVE) await sb.auth.signOut(); else store.set("mcwasa_user",null); me=null; showStudio(); };
+
+const theme = () => document.querySelector('input[name=theme]:checked').value;
+function draft(){
+  return {id:"p"+Date.now(), head:$("#pHead").value.trim()||"Your headline here", kick:$("#pKick").value, theme:theme(),
+    pts:[$("#pB1").value,$("#pB2").value,$("#pB3").value].map(s=>s.trim()).filter(Boolean).length?[$("#pB1").value,$("#pB2").value,$("#pB3").value].map(s=>s.trim()).filter(Boolean):["Your key points show here"],
+    body:$("#pBody").value.trim(), author:me||"Writer", date:iso(0)};
+}
+function updatePreview(){ $("#preview").innerHTML = posterHTML(draft(),true); }
+$("#postForm").addEventListener("input", updatePreview);
+$("#postForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const d = draft(), f = e.target, m = $("#postMsg");
+  if(LIVE){
+    m.textContent="Publishing...";
+    const {error} = await sb.from("posts").insert({head:d.head,kick:d.kick,theme:d.theme,pts:d.pts,body:d.body,author:me});
+    if(error){ m.textContent="Could not publish: "+error.message; return; }
+    await loadData();
+  } else { posts.unshift(d); store.set("mcwasa_posts",posts); }
+  f.reset(); updatePreview(); renderAll();
+  m.textContent="Published. It is now on the feed and Posters page.";
+});
+$("#eDate").min = iso(0);
+$("#evForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const f = e.target, m = $("#evMsg");
+  const ev = {title:$("#eTitle").value.trim(),type:$("#eType").value,artist:$("#eArtist").value.trim(),
+    venue:$("#eVenue").value.trim(),town:$("#eTown").value,date:$("#eDate").value,time:$("#eTime").value,price:$("#ePrice").value.trim()||"Free"};
+  if(LIVE){
+    m.textContent="Adding...";
+    const {error} = await sb.from("events").insert(ev);
+    if(error){ m.textContent="Could not add: "+error.message; return; }
+    await loadData();
+  } else { events.push({id:"e"+Date.now(),...ev}); store.set("mcwasa_events",events); }
+  f.reset(); renderAll();
+  m.textContent="Added. It now shows under Gigs near me.";
+});
+$("#exportBtn").onclick = () => {
+  const b = new Blob([JSON.stringify({posts,events},null,2)],{type:"application/json"});
+  const a = document.createElement("a"); a.href=URL.createObjectURL(b); a.download="mcwasa-backup.json"; a.click();
+};
+
+/* ---- routing ---- */
+function route(){
+  const id = (location.hash||"#home").slice(1);
+  const ok = ["home","events","blog","studio"].includes(id) ? id : "home";
+  document.querySelectorAll("section.view").forEach(s=>s.classList.toggle("on", s.id===ok));
+  document.querySelectorAll("nav a").forEach(a=>a.toggleAttribute("aria-current", a.getAttribute("href")==="#"+ok) && a.setAttribute("aria-current","page"));
+  document.querySelectorAll("nav a").forEach(a=>{ if(a.getAttribute("href")!=="#"+ok) a.removeAttribute("aria-current"); });
+  scrollTo(0,0);
+}
+addEventListener("hashchange", route);
+route(); renderAll(); loadMe().then(showStudio); loadData();
+</script>
+</body>
+</html>
