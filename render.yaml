@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: mcwasa-updates
+    runtime: node
+    plan: starter            # a persistent disk needs a paid plan
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    disk:
+      name: mcwasa-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATA_DIR
+        value: /var/data
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false          # you type this in the Render dashboard
+      - key: SECRET
+        generateValue: true

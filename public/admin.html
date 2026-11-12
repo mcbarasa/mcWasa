@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>McWaSa Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;700&family=Bebas+Neue&family=Bungee&family=Righteous&family=Pacifico&family=Playfair+Display:wght@700&family=Permanent+Marker&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><meta name="theme-color" content="#000000"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex">
+</head><body>
+<header><div class="wrap bar"><a class="logo" href="/"><b>McWaSa</b> <i>Studio</i></a><nav><a href="/">View site</a><a href="#" id="lo" hidden>Sign out</a></nav></div></header>
+<main class="wrap">
+<section id="login" class="card" style="max-width:420px;margin-top:30px"><h2 style="margin:0">Writers' <em>studio</em></h2><p class="sub">Only assigned writers can publish. Use the username and password your editor gave you.</p>
+<form id="lf" style="display:grid;gap:12px"><label>Username<input name="username" autocomplete="username" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button class="btn">Sign in</button></form><p class="msg" id="le"></p></section>
+<section id="app" hidden>
+<div class="tabs" id="tabs"><button class="btn alt sm on" data-t="posts">📋 All posts</button><button class="btn alt sm" data-t="poster">🖼️ New poster</button><button class="btn alt sm" data-t="users" id="ut" hidden>👥 Writers &amp; backup</button></div>
+<div class="tab card" id="posts"></div>
+<div class="tab studio" id="poster" hidden>
+<form class="card" id="pf"><h3 id="pt">New poster</h3>
+<label>What are you posting?<select name="type" id="ty"><option value="news">📰 News / blog story</option><option value="gig">🎤 Gig / concert</option><option value="event">📅 Event</option></select></label>
+<label>Headline (keep it short)<input name="title" maxlength="60" required></label>
+<div class="newsonly" style="display:grid;gap:12px"><label>Tag<select name="kick"><option>News</option><option>Interview</option><option>New release</option><option>Event recap</option><option>Spotlight</option></select></label>
+<label>Key point 1<input name="p1" maxlength="80"></label><label>Key point 2<input name="p2" maxlength="80"></label><label>Key point 3<input name="p3" maxlength="80"></label></div>
+<div class="evonly" hidden style="display:grid;gap:12px"><label>Artist / band name<input name="artist" maxlength="80"></label>
+<div class="row"><label>Performance<select name="act"><option value="solo">Solo / individual</option><option value="band">Band / group</option><option value="">Not applicable</option></select></label><label>Price bubble<input name="price" maxlength="40" placeholder="Free or KES 500"></label></div>
+<div class="row"><label>Date<input type="date" name="date"></label><label>Time<input type="time" name="time" value="15:00"></label></div>
+<div class="row"><label>Venue / location<input name="venue" maxlength="80"></label><label>Town (for "near me")<select name="town" id="tw"></select></label></div>
+<label>Ticket link (Instagram page or ticketing site)<input name="ticketUrl" inputmode="url" placeholder="https://instagram.com/... or https://tickets..."></label></div>
+<h3 style="margin-top:6px">🎨 Poster style</h3>
+<div class="row"><label>Layout<select name="ps" id="ps"></select></label><label>Headline font<select name="font" id="fo"></select></label></div>
+<label>Quick colour themes<span class="presets" id="presets"></span></label>
+<div class="row3"><label>Background<input type="color" name="bg" value="#39ff14"></label><label>Text<input type="color" name="fg" value="#000000"></label><label>Accent (bubble &amp; button)<input type="color" name="ac" value="#000000"></label></div>
+<label>Poster photo (optional)<input type="file" name="image" accept="image/*" id="pim"></label>
+<label>More details — shown when someone taps "Read more"<textarea name="body" rows="5"></textarea></label>
+<div><button class="btn">Publish</button> <button type="button" class="btn alt" data-cancel>Cancel</button></div><p class="msg" id="pm"></p></form>
+<div class="sticky"><h3 style="margin-bottom:10px">Live preview</h3><div id="prev" class="posterview"></div></div></div>
+<div class="tab card" id="users" hidden><h3>Writers</h3><form id="uf" style="display:grid;gap:10px;max-width:360px"><input name="username" placeholder="New writer username" required><input name="password" placeholder="Password (6+ characters)" required><button class="btn">Add writer</button></form><div id="ul"></div>
+<h3 style="margin-top:16px">Backup</h3><p class="sub">Download all posts and the writers list.</p><div><a class="btn alt sm" href="/api/export">Download backup (JSON)</a></div></div>
+</section></main>
+<script src="towns.js"></script><script src="shared.js"></script><script>
+let me,items=[],eid=null,pvImg='';
+const api=async(u,o={})=>{const r=await fetch(u,o),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||'Error');return j};
+const J=(m,b)=>({method:m,headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+const f=()=>$('#pf').elements;
+$('#tw').innerHTML='<option value="">— choose —</option>'+Object.keys(TOWNS).map(t=>`<option>${t}</option>`).join('');
+$('#ps').innerHTML=Object.entries(STYLES).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+$('#fo').innerHTML=Object.keys(FONTS).map(k=>`<option style="font-family:'${k}'">${k}</option>`).join('');
+$('#presets').innerHTML=PRESETS.map((p,i)=>`<button type="button" title="${p[0]}" data-i="${i}" style="background:linear-gradient(135deg,${p[1]} 58%,${p[3]} 58%)"></button>`).join('');
+$('#presets').onclick=e=>{const p=PRESETS[e.target.dataset.i];if(!p)return;f().bg.value=p[1];f().fg.value=p[2];f().ac.value=p[3];upd()};
+const tab=t=>{document.querySelectorAll('.tab').forEach(x=>x.hidden=x.id!=t);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==t))};
+$('#tabs').onclick=e=>{const t=e.target.dataset.t;if(!t)return;if(t=='poster')reset();tab(t)};
+document.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>{reset();tab('posts')});
+async function start(){try{me=await api('/api/me')}catch{$('#login').hidden=false;$('#app').hidden=true;$('#lo').hidden=true;return}
+ $('#login').hidden=true;$('#app').hidden=false;$('#lo').hidden=false;$('#ut').hidden=me.role!='admin';await load();tg();if(me.role=='admin')users()}
+$('#lf').onsubmit=async e=>{e.preventDefault();try{await api('/api/login',J('POST',Object.fromEntries(new FormData(e.target))));$('#le').textContent='';start()}catch(x){$('#le').textContent=x.message}};
+$('#lo').onclick=async e=>{e.preventDefault();await api('/api/logout',{method:'POST'});start()};
+async function load(){items=await api('/api/items');
+ $('#posts').innerHTML='<h3>All posts</h3>'+(items.map(i=>`<div class="li"><div><span class="tag ${i.type=='news'?'':'y'}">${i.type}</span> <b>${esc(i.title)}</b><br><small>by ${esc(i.author||'?')}${i.date?' · '+esc(i.date):''}</small></div><div>${me.role=='admin'||i.authorId==me.id?`<button class="btn alt sm" onclick="edit('${i.id}')">Edit</button><button class="btn alt sm" onclick="del('${i.id}')">Delete</button>`:''}</div></div>`).join('')||'<p class="sub">No posts yet. Create your first poster!</p>')}
+async function del(id){if(confirm('Delete this post?')){await api('/api/items/'+id,{method:'DELETE'});load()}}
+function draft(){const e=f(),v=k=>e[k].value.trim(),pts=[v('p1'),v('p2'),v('p3')].filter(Boolean);
+ return{id:'x',type:v('type'),title:v('title')||'Your headline here',kick:v('kick'),pts:pts.length?pts:['Your key points show here'],artist:v('artist'),act:v('act'),date:v('date')||iso(7),time:v('time'),venue:v('venue')||'Venue',town:v('town'),price:v('price'),ticketUrl:v('ticketUrl')?'#':'',
+ bg:e.bg.value,fg:e.fg.value,ac:e.ac.value,font:v('font'),ps:v('ps'),image:pvImg,author:me?me.username:'Writer',created:Date.now()}}
+function upd(){$('#prev').innerHTML=posterHTML(draft(),false)}
+function tg(){const e=f(),ev=e.type.value!='news';document.querySelectorAll('.evonly').forEach(x=>x.hidden=!ev);document.querySelectorAll('.newsonly').forEach(x=>x.hidden=ev);
+ e.date.required=e.venue.required=ev;e.p1.required=!ev;upd()}
+$('#ty').onchange=tg;$('#pf').addEventListener('input',upd);
+$('#pim').onchange=e=>{const x=e.target.files[0];if(x){pvImg=URL.createObjectURL(x);upd()}};
+function reset(){eid=null;$('#pf').reset();pvImg='';$('#pt').textContent='New poster';$('#pm').textContent='';tg()}
+function edit(id){const i=items.find(x=>x.id==id);reset();eid=id;const e=f();
+ for(const k of['type','title','kick','artist','act','date','time','venue','town','price','ticketUrl','body','ps','font'])if(i[k]!=null)e[k].value=i[k];
+ const th=THEME[i.theme]||[];e.bg.value=i.bg||th[0]||'#39ff14';e.fg.value=i.fg||th[1]||'#000000';e.ac.value=i.ac||th[2]||'#000000';
+ ['p1','p2','p3'].forEach((k,n)=>e[k].value=(i.pts||[])[n]||'');pvImg=i.image||'';$('#pt').textContent='Edit poster';tg();tab('poster')}
+$('#pf').onsubmit=async e=>{e.preventDefault();try{await api(eid?'/api/items/'+eid:'/api/items',{method:eid?'PUT':'POST',body:new FormData(e.target)});reset();await load();tab('posts')}catch(x){$('#pm').textContent=x.message}};
+async function users(){const u=await api('/api/users');$('#ul').innerHTML=u.map(x=>`<div class="li"><span>${esc(x.username)} <small>${x.role}</small></span>${x.role=='admin'?'':`<button class="btn alt sm" onclick="rmu('${x.id}')">Remove</button>`}</div>`).join('')}
+$('#uf').onsubmit=async e=>{e.preventDefault();try{await api('/api/users',J('POST',Object.fromEntries(new FormData(e.target))));e.target.reset();users()}catch(x){alert(x.message)}};
+async function rmu(id){if(confirm('Remove this writer?')){await api('/api/users/'+id,{method:'DELETE'});users()}}
+start();
+</script></body></html>
