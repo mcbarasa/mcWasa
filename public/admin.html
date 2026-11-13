@@ -7,7 +7,7 @@
 <section id="login" class="card" style="max-width:420px;margin-top:30px"><h2 style="margin:0">Writers' <em>studio</em></h2><p class="sub">Only assigned writers can publish. Use the username and password your editor gave you.</p>
 <form id="lf" style="display:grid;gap:12px"><label>Username<input name="username" autocomplete="username" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button class="btn">Sign in</button></form><p class="msg" id="le"></p></section>
 <section id="app" hidden>
-<div class="tabs" id="tabs"><button class="btn alt sm on" data-t="posts">📋 All posts</button><button class="btn alt sm" data-t="poster">🖼️ New poster</button><button class="btn alt sm" data-t="users" id="ut" hidden>👥 Writers &amp; backup</button></div>
+<div id="sb"></div><div class="tabs" id="tabs"><button class="btn alt sm on" data-t="posts">📋 All posts</button><button class="btn alt sm" data-t="poster">🖼️ New poster</button><button class="btn alt sm" data-t="users" id="ut" hidden>👥 Writers &amp; backup</button></div>
 <div class="tab card" id="posts"></div>
 <div class="tab studio" id="poster" hidden>
 <form class="card" id="pf"><h3 id="pt">New poster</h3>
@@ -45,7 +45,7 @@ const tab=t=>{document.querySelectorAll('.tab').forEach(x=>x.hidden=x.id!=t);doc
 $('#tabs').onclick=e=>{const t=e.target.dataset.t;if(!t)return;if(t=='poster')reset();tab(t)};
 document.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>{reset();tab('posts')});
 async function start(){try{me=await api('/api/me')}catch{$('#login').hidden=false;$('#app').hidden=true;$('#lo').hidden=true;return}
- $('#login').hidden=true;$('#app').hidden=false;$('#lo').hidden=false;$('#ut').hidden=me.role!='admin';await load();tg();if(me.role=='admin')users()}
+ $('#login').hidden=true;$('#app').hidden=false;$('#lo').hidden=false;$('#ut').hidden=me.role!='admin';await load();tg();if(me.role=='admin'){users();api('/api/storage').then(s=>{$('#sb').innerHTML=(s.mode=='disk'&&s.onRender&&!s.persistent)?'<div class="card" style="border-color:#ff5c5c;margin-bottom:14px"><b style="color:#ff5c5c">⚠️ Storage is not permanent.</b> Posts and photos will be lost every time the site restarts. Set DATABASE_URL (free database) or attach a Render disk, as described in the setup guide.</div>':`<p class="meta">Storage: ${s.mode=='postgres'?'database ✔':s.persistent?'persistent disk ✔':'local files'} · ${s.items} posts</p>`}).catch(()=>{})}}
 $('#lf').onsubmit=async e=>{e.preventDefault();try{await api('/api/login',J('POST',Object.fromEntries(new FormData(e.target))));$('#le').textContent='';start()}catch(x){$('#le').textContent=x.message}};
 $('#lo').onclick=async e=>{e.preventDefault();await api('/api/logout',{method:'POST'});start()};
 async function load(){items=await api('/api/items');
@@ -68,5 +68,6 @@ $('#pf').onsubmit=async e=>{e.preventDefault();try{await api(eid?'/api/items/'+e
 async function users(){const u=await api('/api/users');$('#ul').innerHTML=u.map(x=>`<div class="li"><span>${esc(x.username)} <small>${x.role}</small></span>${x.role=='admin'?'':`<button class="btn alt sm" onclick="rmu('${x.id}')">Remove</button>`}</div>`).join('')}
 $('#uf').onsubmit=async e=>{e.preventDefault();try{await api('/api/users',J('POST',Object.fromEntries(new FormData(e.target))));e.target.reset();users()}catch(x){alert(x.message)}};
 async function rmu(id){if(confirm('Remove this writer?')){await api('/api/users/'+id,{method:'DELETE'});users()}}
+if(window.EventSource)new EventSource('/api/stream').onmessage=()=>{if(me)load()};
 start();
 </script></body></html>

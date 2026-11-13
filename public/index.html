@@ -66,7 +66,12 @@ function route(){const h=(location.hash||'#home').slice(1),ok=['home','events','
  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id===ok));
  document.querySelectorAll('nav a').forEach(a=>a.getAttribute('href')==='#'+ok?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));scrollTo(0,0)}
 addEventListener('hashchange',route);route();
-fetch('/api/items').then(r=>r.json()).then(d=>{items=d.map(i=>({pts:[],...i}));items.forEach(i=>i._h=hay(i));renderAll()});
+let sig='';
+async function load(force){try{const d=await(await fetch('/api/items',{cache:'no-store'})).json(),s=JSON.stringify(d);if(s===sig&&!force)return;sig=s;items=d.map(i=>({pts:[],...i}));items.forEach(i=>i._h=hay(i));renderAll()}catch{}}
+load(true);
+if(window.EventSource)new EventSource('/api/stream').onmessage=()=>load();
+setInterval(load,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)load(true)});addEventListener('online',()=>load(true));
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 let dp;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;$('#inst').hidden=false});
 $('#inst').onclick=async()=>{dp.prompt();await dp.userChoice;$('#inst').hidden=true};
